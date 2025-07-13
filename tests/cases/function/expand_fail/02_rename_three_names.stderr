@@ -1,0 +1,5 @@
+error: unexpected token
+ --> tests/cases/function/expand_fail/02_rename_three_names.rs:5:15
+  |
+5 | #[split(a, b, c)]
+  |               ^

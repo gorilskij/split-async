@@ -1,0 +1,5 @@
+error: function must be async
+ --> tests/cases/function/expand_fail/01_not_async.rs:6:1
+  |
+6 | fn func() {}
+  | ^^^^^^^^^

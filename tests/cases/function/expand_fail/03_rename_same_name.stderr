@@ -1,0 +1,5 @@
+error: repeated identifier
+ --> tests/cases/function/expand_fail/03_rename_same_name.rs:5:12
+  |
+5 | #[split(a, a)]
+  |            ^
