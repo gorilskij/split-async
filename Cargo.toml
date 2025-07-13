@@ -6,9 +6,9 @@ edition = "2024"
 readme = "README.md"
 license = "MIT"
 description = "A procedural macro to generate sync and async versions of a function"
-repository = ""                                                                      # TODO
-documentation = ""                                                                   # TODO
-keywords = []                                                                        # TODO
+repository = "https://github.com/gorilskij/split-async"
+documentation = "https://docs.rs/split-async"
+keywords = ["async", "blocking", "proc-macro", "codegen", "function-generation"]
 
 [dependencies]
 proc-macro2 = "1.0"
