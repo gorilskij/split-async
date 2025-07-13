@@ -5,7 +5,7 @@ use syn::{
     visit_mut::{self, VisitMut, visit_expr_closure_mut, visit_item_mut},
 };
 
-use crate::util::TwoIdents;
+use crate::util::ChooseArgs;
 
 pub struct IntoSync;
 
@@ -45,8 +45,8 @@ impl VisitMut for IntoSync {
                 if let Some(ident) = expr.mac.path.get_ident() {
                     if ident == "choose" {
                         let input: proc_macro::TokenStream = expr.mac.tokens.clone().into();
-                        let TwoIdents { sync_ident, .. } = syn::parse(input).unwrap();
-                        *e = parse_quote!(#sync_ident)
+                        let ChooseArgs { sync_path, .. } = syn::parse(input).unwrap();
+                        *e = parse_quote!(#sync_path)
                     }
                 }
             }
@@ -93,8 +93,8 @@ impl VisitMut for IntoAsync {
                         // let mut syntax_tree: Punctuated<syn::Ident, Comma> =
                         // syn::parse().unwrap();
                         let input: proc_macro::TokenStream = expr.mac.tokens.clone().into();
-                        let TwoIdents { async_ident, .. } = syn::parse(input).unwrap();
-                        *e = parse_quote!(#async_ident)
+                        let ChooseArgs { async_path, .. } = syn::parse(input).unwrap();
+                        *e = parse_quote!(#async_path)
                     }
                 }
             }

@@ -11,9 +11,10 @@ documentation = "https://docs.rs/split-async"
 keywords = ["async", "blocking", "proc-macro", "codegen", "function-generation"]
 
 [dependencies]
+derive_more = { version = "2.0.1", features = ["from"] }
 proc-macro2 = "1.0"
 quote = "1.0"
-syn = { version = "2.0", features = ["visit-mut", "full"] }
+syn = { version = "2.0", features = ["visit-mut", "full", "extra-traits"] }
 
 [lib]
 proc-macro = true

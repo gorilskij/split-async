@@ -6,7 +6,7 @@ use proc_macro2::TokenStream as TokenStream2;
 use syn::{Error, ImplItem, TraitItem};
 
 use quote::quote;
-use util::{TwoIdents, split_idents};
+use util::{SplitArgs, split_idents};
 use visit::IntoAsync;
 
 use crate::{parse::Item, visit::IntoSync};
@@ -50,7 +50,7 @@ fn into_async(input: &Item) -> TokenStream2 {
 }
 
 fn split_(args: TokenStream, input: TokenStream) -> syn::Result<TokenStream> {
-    let idents: Option<TwoIdents> = (!args.is_empty()).then(|| syn::parse(args)).transpose()?;
+    let idents: Option<SplitArgs> = (!args.is_empty()).then(|| syn::parse(args)).transpose()?;
 
     let item: Item = syn::parse(input)?;
 
@@ -59,11 +59,11 @@ fn split_(args: TokenStream, input: TokenStream) -> syn::Result<TokenStream> {
             if item_fn.sig.asyncness.is_none() {
                 return Err(Error::new_spanned(&item_fn.sig, "function must be async"));
             }
-            let idents = idents.unwrap_or_else(|| split_idents(&item_fn.sig.ident));
+            let idents = idents.unwrap_or_else(|| split_idents(&item_fn.sig.ident).into());
             let mut sync_item = item_fn.clone();
-            sync_item.sig.ident = idents.sync_ident;
+            sync_item.sig.ident = idents.0.sync_ident;
             let mut async_item = item_fn;
-            async_item.sig.ident = idents.async_ident;
+            async_item.sig.ident = idents.0.async_ident;
             (Item::Fn(sync_item), Item::Fn(async_item))
         }
         _ => unimplemented!(),
@@ -75,7 +75,6 @@ fn split_(args: TokenStream, input: TokenStream) -> syn::Result<TokenStream> {
     Ok(sync_ts.into())
 }
 
-/// Can be applied to trait item, trait impl, functions and struct impls.
 #[proc_macro_attribute]
 pub fn split(args: TokenStream, input: TokenStream) -> TokenStream {
     split_(args, input).unwrap_or_else(|err| err.to_compile_error().into())

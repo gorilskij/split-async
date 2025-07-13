@@ -26,4 +26,5 @@ fn test_expand() {
 fn test_expand_fail() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/cases/function/expand_fail/*.rs");
+    t.compile_fail("tests/cases/function/choose_fail/*.rs");
 }

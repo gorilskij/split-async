@@ -1,0 +1,15 @@
+error[E0425]: cannot find value `sync_baz` in this scope
+ --> tests/cases/function/choose_fail/01_wrong_ident.rs:8:1
+  |
+8 | #[split]
+  | ^^^^^^^^ not found in this scope
+  |
+  = note: this error originates in the attribute macro `split` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0425]: cannot find value `async_baz` in this scope
+ --> tests/cases/function/choose_fail/01_wrong_ident.rs:8:1
+  |
+8 | #[split]
+  | ^^^^^^^^ not found in this scope
+  |
+  = note: this error originates in the attribute macro `split` (in Nightly builds, run with -Z macro-backtrace for more info)
