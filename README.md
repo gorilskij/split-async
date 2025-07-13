@@ -17,3 +17,34 @@ version is then generated automatically.
 Features:
 - **Split** your function into a blocking and an `async` version
 - Within your function, use other **split** functions by **choosing** which version to use
+
+### Examples
+
+Here, `loop_body` can be arbitrarily complex and does not need to be duplicated.
+It can call either `sync_operation` or `async_operation` as appropriate, which
+can have completely different functionality.
+The loop mechanics are different so we write them individually in two small wrapper
+functions `sync_loop` and `async_loop` which can be used dynamically at will.
+```rust
+fn sync_operation(x: usize) -> usize { ... }
+
+async fn async_operation(x: usize) -> usize { ... }
+
+#[split]
+async fn loop_body(x: usize) -> usize {
+    // arbitrarily complex async logic
+    choose!(operation)(x)
+}
+
+fn sync_loop() -> Vec<usize> {
+    (0..100)
+        .map(|x| sync_loop_body(x))
+        .collect()
+}
+
+async fn async_loop() -> Vec<usize> {
+    futures::stream::iter(0..100)
+        .map(|x| sync_loop_body(x))
+        .collect()
+}
+```
